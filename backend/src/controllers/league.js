@@ -8,7 +8,7 @@ leagueRouter.get('/', async (request, response) => {
   response.json(leagues)
 })
 
-
+// Uuden kimpan luonti
 leagueRouter.post('/', middleware.userExtractor, async (request, response) => {
   const body = request.body
 
@@ -29,7 +29,7 @@ leagueRouter.post('/', middleware.userExtractor, async (request, response) => {
   await user.save()
   response.status(201).json(savedLeague)
 })
-
+//poista olemassa oleva kimppa (vain kimpan luoja pystyy poistamaan)
 leagueRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const league = await League.findById(request.params.id)
   const user = request.user
@@ -46,14 +46,20 @@ leagueRouter.delete('/:id', middleware.userExtractor, async (request, response) 
 
 
 })
-
+//liittyminen kimppaan
 leagueRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const user = request.user
   const league = await League.findById(request.params.id)
   if (!user) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  var userId = user._id.toString()
+  console.log(league.users)
+  const userAlreadyJoined = league.users.find((element) => element == user._id.toString())
+  if (userAlreadyJoined) {
+    return response.status(400).json({
+      error: 'User has already joined this league'
+    })
+  }
   var users = league.users
   users.push(user._id)
   console.log(users)

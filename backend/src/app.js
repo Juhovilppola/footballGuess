@@ -11,6 +11,7 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const guessRouter = require('./controllers/guess')
+const statusRouter = require('./controllers/status')
 
 logger.info('connecting to', config.MONGODB_URI)
 
@@ -33,6 +34,7 @@ app.use('/api/login', loginRouter)
 app.use('/api/league', leagueRouter)
 app.use('/api/games', gamesRouter)
 app.use('/api/guess', guessRouter)
+app.use('/api/status', statusRouter)
 
 
 /*if (process.env.NODE_ENV === 'test') {

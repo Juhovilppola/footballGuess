@@ -38,7 +38,7 @@ gamesRouter.post('/:id', middleware.userExtractor, async (request, response) => 
   const body = request.body
   const game = await Game.findById(request.params.id)
   const user = request.user
-
+  console.log(request.params.id)
   if (!user) {
     return response.status(401).json({ error: 'token missing or invalid' })
   } else if (!user.admin) {

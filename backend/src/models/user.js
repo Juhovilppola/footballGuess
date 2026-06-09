@@ -11,10 +11,23 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  admin: Boolean,
   leagues: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'League'
+    }
+  ],
+  guess: [
+    {
+      game: {
+        type: Number,
+        required: true
+      },
+      guess: {
+        type: Number,
+        required: true
+      }
     }
   ]
 

@@ -4,7 +4,7 @@ const middleware = require('../utils/middleware')
 
 leagueRouter.get('/', async (request, response) => {
   const leagues = await League
-    .find({}).populate('user', { username: 1, name: 1 })
+    .find({}).populate('title')
   response.json(leagues)
 })
 
@@ -29,7 +29,8 @@ leagueRouter.post('/', middleware.userExtractor, async (request, response) => {
   await user.save()
   response.status(201).json(savedLeague)
 })
-//poista olemassa oleva kimppa (vain kimpan luoja pystyy poistamaan)
+
+//poista olemassa oleva liiga (vain liigan luoja pystyy poistamaan)
 leagueRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const league = await League.findById(request.params.id)
   const user = request.user
@@ -46,7 +47,7 @@ leagueRouter.delete('/:id', middleware.userExtractor, async (request, response) 
 
 
 })
-//liittyminen kimppaan
+//liittyminen liigaan
 leagueRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const user = request.user
   const league = await League.findById(request.params.id)
@@ -76,5 +77,42 @@ leagueRouter.put('/:id', middleware.userExtractor, async (request, response) => 
   response.json(updatedLeague)
 
 })
+//poistaa käyttäjän liigasta
+leagueRouter.delete('/:id/user', middleware.userExtractor, async (request, response) => {
+  const league = await League.findById(request.params.id)
+  const user = request.user
+  if (!user) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  //tarkasta onko käyttäjä liigassa
+  const userAlreadyJoined = league.users.find((element) => element == user._id.toString())
+  if (!userAlreadyJoined) {
+    return response.status(400).json({
+      error: 'User is not in this league'
+    })
+  }
+
+  var users = league.users.remove(user._id)
+
+  const update = {
+    title: league.title,
+    creator: league.creator,
+    users: users
+  }
+
+  const updatedLeague = await League.findByIdAndUpdate(request.params.id, update)
+  user.leagues = user.leagues.remove(updatedLeague._id)
+  await user.save()
+  response.json(updatedLeague)
+  response.status(204).end()
+
+
+
+
+
+
+
+})
+
 
 module.exports = leagueRouter

@@ -6,9 +6,11 @@ const cors = require('cors')
 const loginRouter = require('./controllers/login')
 const usersRouter = require('./controllers/signUp')
 const leagueRouter = require('./controllers/league')
+const gamesRouter = require('./controllers/games')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const guessRouter = require('./controllers/guess')
 
 logger.info('connecting to', config.MONGODB_URI)
 
@@ -29,6 +31,8 @@ app.use(middleware.tokenExtractor)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/league', leagueRouter)
+app.use('/api/games', gamesRouter)
+app.use('/api/guess', guessRouter)
 
 
 /*if (process.env.NODE_ENV === 'test') {

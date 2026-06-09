@@ -9,12 +9,13 @@ const gameSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  Time: String,
-  result: [Number]
+  time: String,
+  result: Number,
+  gameOrder: Number
 })
 
 
-blogSchema.set('toJSON', {
+gameSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id

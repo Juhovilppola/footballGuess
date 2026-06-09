@@ -4,3 +4,4 @@
 | 11.7.2025 | 2h    | backendin kirjautumisen tekemistä, testaamista sekä mongoose scheme tekemistä | 3h    |
 | 29.7.2025 | 3h    | lisää schemojen tekemistä, backendin tekemistä ja testaamista                 | 6h    |
 | 9.6.2026  | 3h    | Lisätty adminille kyky lisätä pelejä sekä käyttäjälle mahdollisuus veikata    | 9h    |
+|           | 1h    | Admin voi lukita veikkaukset sekä lisätty haku toiminto veikkauksille         | 10h   |

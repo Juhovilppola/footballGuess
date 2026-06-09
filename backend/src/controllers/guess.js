@@ -3,14 +3,13 @@ const Game = require('../models/games')
 const middleware = require('../utils/middleware')
 const usersRouter = require('./signUp')
 const Status = require('../models/status')
+const User = require('../models/user')
 
-//const User = require('../models/user')
 
-/*guessRouter.get('/', async (request, response) => {
-  const guesses = await User
-    .find({}).populate('quess')
-  response.json(games)
-})*/
+guessRouter.get('/:id', async (request, response) => {
+  const user = await User.findById(request.params.id)
+  response.json(user.guess)
+})
 
 
 guessRouter.post('/', middleware.userExtractor, async (request, response) => {

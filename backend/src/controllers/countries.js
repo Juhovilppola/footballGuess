@@ -2,12 +2,15 @@ const countriesRouter = require('express').Router()
 const Countries = require('../models/countries')
 const middleware = require('../utils/middleware')
 
+// hakee maat serveriltä
 countriesRouter.get('/', async (request, response) => {
   const countries = await Countries
     .find({}).populate('country')
   response.json(countries)
 })
 
+
+//admin pystyy lisäämään maan
 countriesRouter.post('/', middleware.userExtractor, async (request, response) => {
   const body = request.body
 
@@ -30,6 +33,7 @@ countriesRouter.post('/', middleware.userExtractor, async (request, response) =>
   response.status(201).json(savedcountry)
 })
 
+//admin pystyy muokkaamaan maan sijoitusta
 countriesRouter.post('/:id', middleware.userExtractor, async (request, response) => {
   const body = request.body
   const country = await Countries.findById(request.params.id)

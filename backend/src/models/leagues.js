@@ -16,7 +16,12 @@ const leagueSchema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     }
-  ]
+  ],
+  status: String,
+  passwordHash: {
+    type: String
+  },
+
 })
 
 leagueSchema.set('toJSON', {
